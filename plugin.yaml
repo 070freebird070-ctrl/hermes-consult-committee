@@ -1,0 +1,6 @@
+name: consult-committee
+version: 0.1.0
+description: "Lets the model escalate a hard question to the MoA advisor committee and synthesize their answers itself."
+author: "070freebird070-ctrl"
+provides_tools:
+  - consult_committee
