@@ -76,17 +76,34 @@ The 2026 escalation literature is unanimous: small models are overconfident
 (75–92% of tested conditions) and **won't reach for a help tool on their own**
 as often as they should. We reproduced this live: a 35B-class local model called
 the tool reliably when nudged ("use the committee"), answered hard questions
-correctly through it — but did not self-escalate on expert questions it went on
-to get wrong.
+correctly through it — but went 0-for-4 on self-escalation. It could even
+*describe* the tool and its triggers perfectly when asked. Knowing ≠ doing.
 
-Levers that help, strongest first:
+Two findings from testing worth passing on:
 
-1. **System-prompt rule** (recommended) — add to your persona/system prompt:
+- **Famous puzzles are useless as escalation tests.** Well-known trap questions
+  (Tuesday-boy probability, Alice's-sisters, etc.) are in the training data —
+  the model solves them solo, correctly, and never feels the need to escalate.
+  Test with genuinely expert or novel questions.
+- **A system-prompt rule fixes it — verified.** After adding the rule below to
+  the model's persona file, the same model self-escalated **unprompted** on an
+  expert math integral (fresh session, zero hints) and again on a hard C++20
+  lock-free concurrency question in normal chat, weighing the advisors'
+  answers against its own analysis in the final response.
 
-   > HARD RULE — for any expert-level science/math/medicine/engineering
-   > question (especially multiple-choice), call the consult_committee tool
-   > FIRST, before reasoning out your own answer; then synthesize the advisors'
-   > answers with your own judgment.
+Levers, strongest first:
+
+1. **System-prompt rule** (recommended, verified above) — add to your
+   persona/system prompt:
+
+   > Phone a friend BEFORE you solo hard stuff. For any expert-level question
+   > (science, math, engineering, architecture), anything with real stakes, or
+   > any answer you feel even a little unsure about — call the
+   > consult_committee tool FIRST, then blend its advice into your answer. Do
+   > not answer from your own head and hope.
+
+   Note: most agents bake the system prompt in at **session start** — running
+   sessions keep the old prompt, so test in a fresh session.
 
 2. **Tool description** — already ships with concrete triggers + a mandatory
    retry tripwire ("failed twice → MUST consult").
