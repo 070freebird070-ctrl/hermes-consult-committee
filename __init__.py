@@ -104,7 +104,7 @@ def _handle_consult_committee(args: dict, **kwargs) -> str:
 
         advisors = []
         failures = 0
-        for label, text in outputs:
+        for label, text, _accounting in outputs:
             text = (text or "").strip()
             failed = not text or text.startswith("[error") or "failed:" in text[:80].lower()
             if failed:
